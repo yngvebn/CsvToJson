@@ -1,0 +1,8 @@
+C:\Github\csvtojson\CsvToJson\bin\Debug\CsvToJson.exe.config
+C:\Github\csvtojson\CsvToJson\bin\Debug\CsvToJson.exe
+C:\Github\csvtojson\CsvToJson\bin\Debug\CsvToJson.pdb
+C:\Github\csvtojson\CsvToJson\obj\Debug\CsvToJson.csprojResolveAssemblyReference.cache
+C:\Github\csvtojson\CsvToJson\obj\Debug\CsvToJson.exe
+C:\Github\csvtojson\CsvToJson\obj\Debug\CsvToJson.pdb
+C:\Github\csvtojson\CsvToJson\bin\Debug\Newtonsoft.Json.dll
+C:\Github\csvtojson\CsvToJson\bin\Debug\Newtonsoft.Json.xml
