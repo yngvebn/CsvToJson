@@ -6,3 +6,13 @@ C:\Github\csvtojson\CsvToJson\obj\Debug\CsvToJson.exe
 C:\Github\csvtojson\CsvToJson\obj\Debug\CsvToJson.pdb
 C:\Github\csvtojson\CsvToJson\bin\Debug\Newtonsoft.Json.dll
 C:\Github\csvtojson\CsvToJson\bin\Debug\Newtonsoft.Json.xml
+C:\github\CsvToJson\CsvToJson\bin\Debug\HtmlAgilityPack.dll
+C:\github\CsvToJson\CsvToJson\bin\Debug\Moq.dll
+C:\github\CsvToJson\CsvToJson\bin\Debug\Selenium.Webdriver.Domify.dll
+C:\github\CsvToJson\CsvToJson\bin\Debug\WebDriver.dll
+C:\github\CsvToJson\CsvToJson\bin\Debug\WebDriver.Support.dll
+C:\github\CsvToJson\CsvToJson\bin\Debug\HtmlAgilityPack.pdb
+C:\github\CsvToJson\CsvToJson\bin\Debug\HtmlAgilityPack.xml
+C:\github\CsvToJson\CsvToJson\bin\Debug\Moq.xml
+C:\github\CsvToJson\CsvToJson\bin\Debug\WebDriver.xml
+C:\github\CsvToJson\CsvToJson\bin\Debug\WebDriver.Support.xml
