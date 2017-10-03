@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using Selenium.Webdriver.Domify;
@@ -13,53 +14,60 @@ using Selenium.Webdriver.Domify.Elements;
 
 namespace CsvToJson
 {
-    class Program
+    public class Program
     {
+
         static void Main(string[] args)
         {
-            //using (var browserSetup = new BrowserSetup())
-            //{
-            //    var d = browserSetup.WebDriver.Document();
-            //    d.Navigation.GoTo("https://insights.hotjar.com/sites/330961/feedback/responses/14493");
-            //    d.TextField("email").Text = "yngve.bakken.nilsen@rikstoto.no";
-            //    d.TextField("password").Text = Settings.Password;
-            //    d.Button(Find.ByText("Sign in")).Click();
-            //    d.WaitUntilFound<Div>(By.Id("filter-date")).Div(By.ClassName("dropdown-toggle")).Click();
-            //    d.WaitUntilFound<Div>(By.Id("filter-date")).Lists.First().OwnListItems.Last().Links.Single().Click();
-            //    System.Threading.Thread.Sleep(1000);
-            //    d.Link(Find.ByText("Download as CSV")).Click();
-            //    System.Threading.Thread.Sleep(1000);
-            //}
+            using (var browserSetup = new BrowserSetup())
+            {
+                browserSetup.WebDriver.Manage().Window.Size = new Size(0, 0);
+                var d = browserSetup.WebDriver.Document();
+                Console.WriteLine("Going to Hotjar");
+                d.Navigation.GoTo("https://insights.hotjar.com/sites/330961/feedback/responses/14493");
+                Console.WriteLine("Logging in");
+                d.TextField("email").Text = "yngve.bakken.nilsen@rikstoto.no";
+                d.TextField("password").Text = Settings.Password;
+                d.Button(Find.ByText("Sign in")).Click();
+                Console.WriteLine("Selecting stuff");
+                d.WaitUntilFound<Div>(By.Id("filter-date")).Div(By.ClassName("dropdown-toggle")).Click();
+                d.WaitUntilFound<Div>(By.Id("filter-date")).Lists.First().OwnListItems.Last().Links.Single().Click();
+                System.Threading.Thread.Sleep(1000);
+                Console.WriteLine("Downloading report");
+                d.Link(Find.ByText("Download as CSV")).Click();
+                System.Threading.Thread.Sleep(1000);
+            }
 
-            var newestFile = Directory.GetFiles(@"C:\Users\yngven\Downloads", "feedback-14493*.csv").Select(f => new FileInfo(f)).OrderByDescending(f => f.CreationTime).First();
-            var json = CsvToJson.Parse<Feedback>(newestFile.FullName).Where(c => c.Emotion > 0).ToList();
-            var data = new FeedbackData(json);
-            File.WriteAllText(@"c:\temp\feedback.json", JsonConvert.SerializeObject(data));
-            Console.WriteLine($"Will parse {newestFile.FullName}");
+            
+            var newestFile = Directory.GetFiles(BrowserSetup.DownloadDirectory, "feedback-14493*.csv").Select(f => new FileInfo(f)).OrderByDescending(f => f.CreationTime).FirstOrDefault();
+            if (newestFile != null)
+            {
+                Console.WriteLine($"Converting {newestFile} to json");
+                var json = CsvToJson.Parse<Feedback>(newestFile.FullName).Where(c => c.Emotion > 0).ToList();
+                var data = new FeedbackData(json);
+                Console.WriteLine($"Got {data.all.Count()} feedback-items");
+                string saveFileName = Path.Combine(Settings.SaveLocation, "feedback.json");
 
-            //    string fileName = @"c:\temp\poll.csv";
-            //    if (args.Length > 0)
-            //    {
-            //        fileName = args[0];
-            //    }
+                Console.WriteLine($"Saving to {saveFileName}");
 
-            //    var lines = new Queue<string>(FixLinesAndSplit(File.ReadAllLines(fileName)));
+                File.WriteAllText(saveFileName, JsonConvert.SerializeObject(data));
+#if DEBUG
+                Console.WriteLine("Done! Exiting in 3 sec");
+                System.Threading.Thread.Sleep(3000);
+#endif
 
-            //    string[] headers = GetFields(lines.Dequeue()).Select(ToValidIdentifier).ToArray();
-            //    List<Dictionary<string, string>> allItems = new List<Dictionary<string, string>>();
-            //    while (lines.Count > 0)
-            //    {
-            //        allItems.Add(CreateDictionaryItem(headers, GetFields(lines.Dequeue()).ToList()));
-            //    }
-            //    var json = JsonConvert.SerializeObject(allItems);
-            //    var jsonFileName = Path.GetFileNameWithoutExtension(fileName) + ".json";
-            //    File.WriteAllText(Path.Combine(Path.GetDirectoryName(fileName), jsonFileName), json);
+            }
+            else
+            {
+                Console.WriteLine("No files downloaded!");
+                System.Threading.Thread.Sleep(4000);
+            }
         }
 
         public class FeedbackData
         {
-            public int Count => all.Count;
-            private List<Feedback> all { get; set; }
+            public int count => all.Count;
+            public List<Feedback> all { get; set; }
             public double average => all.Average(f => f.Emotion);
 
             public object averageByDevice => all.GroupBy(f => f.Device)
