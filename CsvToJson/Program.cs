@@ -19,24 +19,24 @@ namespace CsvToJson
 
         static void Main(string[] args)
         {
-            using (var browserSetup = new BrowserSetup())
-            {
-                browserSetup.WebDriver.Manage().Window.Size = new Size(0, 0);
-                var d = browserSetup.WebDriver.Document();
-                Console.WriteLine("Going to Hotjar");
-                d.Navigation.GoTo("https://insights.hotjar.com/sites/330961/feedback/responses/14493");
-                Console.WriteLine("Logging in");
-                d.TextField("email").Text = "yngve.bakken.nilsen@rikstoto.no";
-                d.TextField("password").Text = Settings.Password;
-                d.Button(Find.ByText("Sign in")).Click();
-                Console.WriteLine("Selecting stuff");
-                d.WaitUntilFound<Div>(By.Id("filter-date")).Div(By.ClassName("dropdown-toggle")).Click();
-                d.WaitUntilFound<Div>(By.Id("filter-date")).Lists.First().OwnListItems.Last().Links.Single().Click();
-                System.Threading.Thread.Sleep(1000);
-                Console.WriteLine("Downloading report");
-                d.Link(Find.ByText("Download as CSV")).Click();
-                System.Threading.Thread.Sleep(1000);
-            }
+            //using (var browserSetup = new BrowserSetup())
+            //{
+            //   // browserSetup.WebDriver.Manage().Window.Size = new Size(0, 0);
+            //    var d = browserSetup.WebDriver.Document();
+            //    Console.WriteLine("Going to Hotjar");
+            //    d.Navigation.GoTo("https://insights.hotjar.com/sites/330961/feedback/responses/14493");
+            //    Console.WriteLine("Logging in");
+            //    d.TextField("email").Text = "yngve.bakken.nilsen@rikstoto.no";
+            //    d.TextField("password").Text = Settings.Password;
+            //    d.Button(Find.ByText("Sign in")).Click();
+            //    Console.WriteLine("Selecting stuff");
+            //    d.WaitUntilFound<Div>(By.Id("filter-date")).Div(By.ClassName("dropdown-toggle")).Click();
+            //    d.WaitUntilFound<Div>(By.Id("filter-date")).Lists.First().OwnListItems.Last().Links.Single().Click();
+            //    System.Threading.Thread.Sleep(1000);
+            //    Console.WriteLine("Downloading report");
+            //    d.Link(Find.ByText("Download as CSV")).Click();
+            //    System.Threading.Thread.Sleep(1000);
+            //}
 
             
             var newestFile = Directory.GetFiles(BrowserSetup.DownloadDirectory, "feedback-14493*.csv").Select(f => new FileInfo(f)).OrderByDescending(f => f.CreationTime).FirstOrDefault();

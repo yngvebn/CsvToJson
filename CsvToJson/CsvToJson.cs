@@ -9,7 +9,7 @@ namespace CsvToJson
     {
         public static List<T> Parse<T>(string file)
         {
-            var allLines = File.ReadAllLines(file);
+            var allLines = File.ReadAllText(file).Replace('\n',' ').Split('\r');
             var headers = Regex.Matches(allLines[0], "\\\"(.*?)\\\",");
             List<Dictionary<string, string>> returnList = new List<Dictionary<string, string>>();
             for (int i = 1; i < allLines.Length; i++)
